@@ -1,10 +1,14 @@
 defmodule MyappWeb.UserController do
   use MyappWeb, :controller
 
+  action_fallback MyappWeb.FallbackController
+
   def create(conn, params) do
-    conn
-    |> put_status(:created)
-    |> json(%{ data: %{ id: 1, name: params["name"], email: params["email"]}})
+    with {:ok, user} <- Myapp.Account.create_user(params) do
+      conn
+      |> put_status(:created)
+      |> render("show.json", %{user: user})
+    end
   end
 
 end
