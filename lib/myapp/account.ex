@@ -37,6 +37,14 @@ defmodule Myapp.Account do
   """
   def get_user!(id), do: Repo.get!(User, id)
 
+  @spec get_user(String.t() | integer()) :: {:ok, User.t()} | {:error, :not_found}
+  def get_user(id) do
+    case Repo.get(User, id) do
+      %User{} = user -> {:ok, user}
+      _ -> {:error, :not_found}
+    end
+  end
+
   @doc """
   Creates a user.
 

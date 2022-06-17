@@ -9,6 +9,7 @@ defmodule MyappWeb.Router do
     pipe_through :api
 
     post "/users", UserController, :create
+    get "/users/:id", UserController, :show
 
   end
 

@@ -28,4 +28,23 @@ defmodule MyappWeb.User.Controller do
     end
   end
 
+  describe "show" do
+    test "returns ok when valid data", %{conn: conn} do
+      user = insert(:user)
+
+      conn = get(conn, "/api/users/#{user.id}")
+
+      assert resp = json_response(conn, 200)["data"]
+      assert resp["id"] == user.id
+      assert resp["name"] == user.name
+      assert resp["email"] == user.email
+    end
+
+    test "returns error when invalid data", %{conn: conn} do
+      conn = get(conn, "/api/users/0")
+
+      assert json_response(conn, 404)["errors"]["detail"] == "Not Found"
+    end
+  end
+
 end
