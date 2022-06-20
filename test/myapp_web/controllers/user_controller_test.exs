@@ -47,4 +47,25 @@ defmodule MyappWeb.User.Controller do
     end
   end
 
+  describe "index" do
+    test "returns ok when valida data", %{conn: conn} do
+      user = insert(:user)
+
+      conn = get(conn, "/api/users")
+
+      assert [resp] = json_response(conn, 200)["data"]
+      assert resp["id"] == user.id
+    end
+
+    test "returns ok when valid users", %{conn: conn} do
+      user = insert(:user) #|> IO.inspect()
+      insert(:user) #|> IO.inspect()
+
+      conn = get(conn, "/api/users")
+
+      assert [resp, _resp2] = json_response(conn, 200)["data"]
+      assert resp["id"] == user.id
+    end
+  end
+
 end

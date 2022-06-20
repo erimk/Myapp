@@ -10,6 +10,8 @@ defmodule MyappWeb.Router do
 
     post "/users", UserController, :create
     get "/users/:id", UserController, :show
+    get "/users", UserController, :index
+
 
   end
 

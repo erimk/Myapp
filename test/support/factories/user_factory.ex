@@ -4,7 +4,8 @@ defmodule Myapp.UserFactory do
       def user_factory do
         %Myapp.Account.User{
           name: "John Smith",
-          email: "jsmith@mail.com",
+          email: sequence(:email, &"gandalf#{&1}@mail.com"),
+          # email: sequence(:email, fn n -> "mail#{n}@mail.com" end),
           password: "password"
         }
       end

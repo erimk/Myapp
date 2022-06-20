@@ -37,6 +37,9 @@ defmodule Myapp.Account do
   """
   def get_user!(id), do: Repo.get!(User, id)
 
+  @doc """
+  Returns an user by id.
+  """
   @spec get_user(String.t() | integer()) :: {:ok, User.t()} | {:error, :not_found}
   def get_user(id) do
     case Repo.get(User, id) do
