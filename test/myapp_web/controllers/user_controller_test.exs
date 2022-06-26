@@ -88,4 +88,15 @@ defmodule MyappWeb.User.Controller do
       assert json_response(conn, 404)["errors"]["detail"] == "Not Found"
     end
   end
+
+  describe "delete" do
+    test "delete user when valid params", %{conn: conn} do
+      user = insert(:user)
+
+      conn = delete(conn, "/api/users/#{user.id}")
+
+      assert response(conn, 204)
+      assert Myapp.Account.get_user(user.id) == {:error, :not_found}
+    end
+  end
 end

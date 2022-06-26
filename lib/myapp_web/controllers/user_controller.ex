@@ -2,7 +2,6 @@ defmodule MyappWeb.UserController do
   use MyappWeb, :controller
 
   alias Myapp.Account
-  alias Myapp.Account.User
 
   action_fallback MyappWeb.FallbackController
 
@@ -26,6 +25,13 @@ defmodule MyappWeb.UserController do
     with {:ok, user} <- Account.get_user(params["id"]),
          {:ok, neo_user} <- Account.update_user(user, params) do
       render(conn, "show.json", %{user: neo_user})
+    end
+  end
+
+  def delete(conn, %{"id" => id}) do
+    with {:ok, user} <- Account.get_user(id),
+         {:ok, _user} <- Account.delete_user(user) do
+      send_resp(conn, :no_content, "")
     end
   end
 end
