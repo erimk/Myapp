@@ -11,7 +11,7 @@ defmodule MyappWeb.User.Controller do
     test "returns ok when valid data", %{conn: conn} do
       params = params_for(:user)
 
-      conn = post(conn, "/api/users" ,params)
+      conn = post(conn, "/api/users", params)
 
       assert resp = json_response(conn, 201)["data"]
       assert resp["id"] != nil
@@ -58,8 +58,8 @@ defmodule MyappWeb.User.Controller do
     end
 
     test "returns ok when valid users", %{conn: conn} do
-      user = insert(:user) #|> IO.inspect()
-      insert(:user) #|> IO.inspect()
+      user = insert(:user)
+      insert(:user)
 
       conn = get(conn, "/api/users")
 
@@ -68,4 +68,24 @@ defmodule MyappWeb.User.Controller do
     end
   end
 
+  describe "update" do
+    test "returns updated data", %{conn: conn} do
+      user = insert(:user)
+      params = params_for(:user)
+
+      conn = put(conn, "/api/users/#{user.id}", params)
+
+      assert subject = json_response(conn, 200)["data"]
+      assert subject["id"] == user.id
+      assert subject["email"] == params.email
+    end
+
+    test "returns fail without data", %{conn: conn} do
+      params = params_for(:user)
+
+      conn = put(conn, "/api/users/0", params)
+
+      assert json_response(conn, 404)["errors"]["detail"] == "Not Found"
+    end
+  end
 end

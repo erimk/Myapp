@@ -11,8 +11,7 @@ defmodule MyappWeb.Router do
     post "/users", UserController, :create
     get "/users/:id", UserController, :show
     get "/users", UserController, :index
-
-
+    put "/users/:id", UserController, :update
   end
 
   # Enables LiveDashboard only for development

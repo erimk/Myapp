@@ -7,7 +7,7 @@ defmodule MyappWeb.UserController do
   action_fallback MyappWeb.FallbackController
 
   def create(conn, params) do
-    with {:ok, %User{} = user} <- Account.create_user(params) do
+    with {:ok, user} <- Account.create_user(params) do
       conn
       |> put_status(:created)
       |> render("show.json", %{user: user})
@@ -20,5 +20,12 @@ defmodule MyappWeb.UserController do
     end
   end
 
-  def index(conn, _params), do: render(conn, "index.json", %{users: Account.list_users})
+  def index(conn, _params), do: render(conn, "index.json", %{users: Account.list_users()})
+
+  def update(conn, params) do
+    with {:ok, user} <- Account.get_user(params["id"]),
+         {:ok, neo_user} <- Account.update_user(user, params) do
+      render(conn, "show.json", %{user: neo_user})
+    end
+  end
 end
